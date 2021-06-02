@@ -1,0 +1,24 @@
+version: "3.5"
+
+services:
+  research:
+    build:
+      context: research
+      args:
+        JUPYTER_EXTERNAL_PORT: ${JUPYTER_EXTERNAL_PORT}
+    volumes:
+      - ./research:/mnt/code
+      - ${DATA_VOLUME}:/mnt/data
+    environment:
+      TIMEZONE: America/Sao_Paulo
+      SPARK_PUBLIC_DNS: ${SPARK_PUBLIC_DNS}
+      SPARK_MASTER_PORT: ${SPARK_MASTER_PORT}
+      SPARK_WORKER_WEBUI_PORT: ${SPARK_WORKER_PORT}
+    ports:
+      - ${SPARK_WORKER_PORT}:8081
+      - ${SPARK_APPLICATION_PORT}:4040
+      - ${JUPYTER_EXTERNAL_PORT}:${JUPYTER_EXTERNAL_PORT}
+      - ${SPARK_MASTER_WEBUI_PORT}:8080
+      - ${SPARK_MASTER_PORT}:7077
+    image: house-prediction-research
+    container_name: house-prediction-research-${CONTAINER_TAG}
